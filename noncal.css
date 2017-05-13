@@ -1,0 +1,54 @@
+/* minimal css required */
+
+.noncal-hide {
+  display: none;
+}
+
+.noncal-display {
+  display: block;
+}
+
+/* additional css, optional */
+
+body {
+  font-family: sans-serif;
+}
+
+.noncal {
+  position: relative;
+  display: inline-block;
+}
+
+.noncal > a {
+  text-decoration:none;
+  cursor: pointer;
+  padding: 1em 1.2em;
+  background: #00aad4;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  display: block;
+  outline: none;
+}
+
+.noncal ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  border: 1px solid rgb(186, 186, 186);
+  border-radius: 2px;
+  box-shadow: 0 0 5px #AAA;
+}
+
+.noncal li a {
+  margin: 0;
+  display: block;
+  color: black;
+  padding: 0.7em;
+  text-decoration: none;
+}
+
+.noncal li a:hover {
+  background: #eee;
+}

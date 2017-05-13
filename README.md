@@ -1,71 +1,27 @@
-# OuiCal
+# NonCal
 
-A simple JS library that enables you to add an "add to calendar" button for your upcoming events.
+A tiny Javascript library for creating "Add to Calendar" buttons for your upcoming events.
 
-## Inspiration
-
-This project was inspired by [Eventbrite's](http://www.eventbrite.com/) add to calendar feature (which should have been open sourced #justSayin).
+This is a rewrite of Carl Sednaoui's OuiCal with added Outlook Web calendar.
 
 ## How to use it?
 
-Call 'createCalendar' with your event info, pass in any optional parameters such as a class and/ or id and boom! Insert your add-to-calendar div wherever you'd like.
+        <div id="some-id"></div>
 
-The only fields that are mandatory are:
+        <script>
 
-  - Event title
-  - Start time
-  - Event duration, in minutes
+            var event = {
+                title:       'Get on the front page of HN',
+                start:       new Date('June 15, 2020 19:00'),   // see Date, other formats are supported
+                duration:    120,                               // in minutes
+                end:         new Date('June 16, 2020 23:00'),   // overrides duration if set
+                address:     'The internet',
+                description: 'Get on the front page of HN, then prepare for world domination.'
+            };
 
-## Example
+            addToCalendarButton(event, 'some-id');
 
-    var myCalendar = createCalendar({
-      options: {
-        class: 'my-class',
-        
-        // You can pass an ID. If you don't, one will be generated for you
-        id: 'my-id'
-      },
-      data: {
-        // Event title
-        title: 'Get on the front page of HN',
+        </script>
 
-        // Event start date
-        start: new Date('June 15, 2013 19:00'),
-        
-        // Event duration (IN MINUTES)
-        duration: 120,
-
-        // You can also choose to set an end time
-        // If an end time is set, this will take precedence over duration
-        end: new Date('June 15, 2013 23:00'),     
-
-        // Event Address
-        address: 'The internet',
-
-        // Event Description
-        description: 'Get on the front page of HN, then prepare for world domination.'
-      }
-    });
-
-    document.querySelector('#place-where-I-want-this-calendar').appendChild(myCalendar);
-
-[Here is a live example](http://carlsednaoui.github.io/add-to-calendar-buttons/example.html)
-
-## Looking for Instant Gratification?
-[Copy OuiCal into Chrome's JS console](https://raw.github.com/carlsednaoui/ouical/master/ouical.js) (or whatever browser you're using).
-
-
-Then call this:
-
-    document.getElementsByTagName('body')[0].appendChild(createCalendar({data:{title:"this is the title of my event", start: new Date(), duration: 90}}));
-
-\#winning!
-
-## Calendar Generator
-Need to generate an add-to-calendar widget on the fly? No problem, [go here](http://carlsednaoui.github.io/add-to-calendar-buttons/generator/generator.html).
-
-## GitHub Project Page
-[Official Project Page](http://carlsednaoui.github.io/ouical/)
-
-## License
+## Licence
 [MIT](http://opensource.org/licenses/MIT)
