@@ -20,7 +20,7 @@
                 '&text=' + (encodeURI(event.title) || ''),
                 '&dates=' + (formatTime(event.start) || '') + '/' + (calculateEndTime(event) || ''),
                 '&details=' + (encodeURI(event.description) || ''),
-                '&location=' + (encodeURI(event.address) || ''),
+                '&location=' + (encodeURI(event.location) || ''),
                 '&sprop=name:'
             ].join('');
 
@@ -31,7 +31,7 @@
                 'https://outlook.live.com/owa/?startdt=' + (formatTime(event.start) || ''),
                 '&enddt=' + (calculateEndTime(event) || ''),
                 '&subject=' + encodeURI(event.title),
-                '&location=' + encodeURI(event.address),
+                '&location=' + encodeURI(event.location),
                 '&body=' + encodeURI(event.description),
                 '&allday=false',
                 '&uid=' + event.id,
@@ -65,7 +65,7 @@
                 '&st=' + st,
                 '&dur=' + (yahooEventDuration || ''),
                 '&desc=' + (encodeURI(event.description) || ''),
-                '&in_loc=' + (encodeURI(event.address) || '')
+                '&in_loc=' + (encodeURI(event.location) || '')
             ].join('');
         },
 
@@ -84,7 +84,7 @@
                     'DTEND:' + (calculateEndTime(event) || ''),
                     'SUMMARY:' + (event.title || ''),
                     'DESCRIPTION:' + (event.description || ''),
-                    'LOCATION:' + (event.address || ''),
+                    'LOCATION:' + (event.location || ''),
                     'DTSTAMP:' + formatTime(new Date()),
                     'END:VEVENT',
                     'END:VCALENDAR'
