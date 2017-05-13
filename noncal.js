@@ -1,15 +1,13 @@
 (function() {
 
-    var MS_IN_MINUTES = 60 * 1000;
+    var milliseconds_minute = 60000;
 
     var formatTime = function (date) {
         return date.toISOString().replace(/-|:|\.\d+/g, '');
     };
 
     var calculateEndTime = function (event) {
-        return event.end ?
-            formatTime(event.end) :
-            formatTime(new Date(event.start.getTime() + (event.duration * MS_IN_MINUTES)));
+        return event.end ? formatTime(event.end) : formatTime(new Date(event.start.getTime() + (event.duration * milliseconds_minute)));
     };
 
     var getData = {
@@ -44,7 +42,7 @@
         yahoo: function (event) {
 
             var eventDuration = event.end ?
-                ((event.end.getTime() - event.start.getTime()) / MS_IN_MINUTES) :
+                ((event.end.getTime() - event.start.getTime()) / milliseconds_minute) :
                 event.duration;
 
             // Convert duration from minutes to hh:mm
@@ -59,7 +57,7 @@
             var yahooEventDuration = yahooHourDuration + yahooMinuteDuration;
 
             // Remove timezone from event time
-            var st = formatTime(new Date(event.start - (event.start.getTimezoneOffset() * MS_IN_MINUTES))) || '';
+            var st = formatTime(new Date(event.start - (event.start.getTimezoneOffset() * milliseconds_minute))) || '';
 
             return [
                 'http://calendar.yahoo.com/?v=60&view=d&type=20',
@@ -72,18 +70,22 @@
         },
 
         ics: function (event) {
+
+            // See RFC at https://tools.ietf.org/html/rfc5545
+
             return 'data:text/calendar;charset=utf8,' +
                 encodeURI([
                     'BEGIN:VCALENDAR',
                     'VERSION:2.0',
                     'BEGIN:VEVENT',
-                    'URL:' + document.URL,
+                    'UID:' + event.id,
                     'DTSTART:' + (formatTime(event.start) || ''),
+                    'TRANSP:OPAQUE',
                     'DTEND:' + (calculateEndTime(event) || ''),
                     'SUMMARY:' + (event.title || ''),
-                    'UID:' + event.id,
                     'DESCRIPTION:' + (event.description || ''),
                     'LOCATION:' + (event.address || ''),
+                    'DTSTAMP:' + formatTime(new Date()),
                     'END:VEVENT',
                     'END:VCALENDAR'
                 ].join('\n'));
@@ -95,27 +97,27 @@
     var htmlFor = {
 
         google: function (event) {
-            return '<a class="icon-google" target="_blank" href="' + getData.google(event) + '">Google Calendar</a>';
+            return '<a class="noncal-google" target="_blank" href="' + getData.google(event) + '">Google Calendar</a>';
         },
 
         outlookOnline: function (event) {
-            return '<a class="icon-outlook" target="_blank" href="' + getData.outlookOnline(event) + '">Outlook Online</a>';
+            return '<a class="noncal-outlookonline" target="_blank" href="' + getData.outlookOnline(event) + '">Outlook Online</a>';
         },
 
         yahoo: function (event) {
-            return '<a class="icon-yahoo" target="_blank" href="' + getData.yahoo(event) + '">Yahoo! Calendar</a>';
+            return '<a class="noncal-yahoo" target="_blank" href="' + getData.yahoo(event) + '">Yahoo! Calendar</a>';
         },
 
         ics: function (event, eClass, calendarName) {
-            return '<a class="' + eClass + '" target="_blank" href="' + getData.ics(event) + '">' + calendarName + ' Calendar</a>';
+            return '<a download="calendar-' + formatTime(event.start) + '.ics" class="' + eClass + '" target="_blank" href="' + getData.ics(event) + '">' + calendarName + ' Calendar</a>';
         },
 
         ical: function (event) {
-            return this.ics(event, 'icon-ical', 'iCal');
+            return this.ics(event, 'noncal-ical', 'iCal');
         },
 
         outlook: function (event) {
-            return this.ics(event, 'icon-outlook', 'Outlook');
+            return this.ics(event, 'noncal-outlook', 'Outlook');
         }
     };
 
@@ -131,7 +133,7 @@
 
     window['addToCalendarButton'] = function (event, appendIn) {
 
-        event.id = 'noncal' + Math.floor(Math.random() * 1000000);
+        event.id = 'a' + (Math.random()*1e32).toString(15);
 
         var calendars = allCalendars(event);
 
